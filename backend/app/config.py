@@ -35,6 +35,7 @@ class Settings(BaseSettings):
     BACKGROUND_INTERVAL_MINUTES: int = 5
     MEDICATION_REMINDER_HOUR: int = 9
     CORS_ORIGINS: str = "http://localhost:3000"
+    FRONTEND_URL: str = "http://localhost:3000"
 
     @property
     def allowed_cors_origins(self) -> list[str]:

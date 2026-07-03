@@ -107,4 +107,4 @@ async def google_callback(code: str, state: str, db: Prisma = Depends(get_db)):
         )
 
     redirect_path = "/patient/dashboard" if user.role == "PATIENT" else "/doctor/dashboard"
-    return RedirectResponse(url=f"http://localhost:3000{redirect_path}?calendar=linked")
+    return RedirectResponse(url=f"{settings.FRONTEND_URL}{redirect_path}?calendar=linked")
