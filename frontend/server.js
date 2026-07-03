@@ -64,7 +64,12 @@ app.get('/privacy', (req, res) => {
   res.render('privacy');
 });
 
+app.get('/terms', (req, res) => {
+  res.render('terms');
+});
+
 app.listen(PORT, () => {
   console.log(`Frontend server running on http://localhost:${PORT}`);
 });
+
 
