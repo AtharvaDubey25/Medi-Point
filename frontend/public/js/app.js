@@ -1,1 +1,1 @@
-console.log('Healthcare Platform loaded');
+console.log('Medi Point loaded');

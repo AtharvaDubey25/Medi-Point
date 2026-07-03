@@ -73,6 +73,6 @@ def format_appointment_email(appointment, patient_name: str, doctor_name: str) -
             f"Date: {date_str}\n"
             f"Time: {appointment.start_time} - {appointment.end_time}\n\n"
             f"Please arrive 10 minutes early.\n\n"
-            f"Thank you,\nHealthcare Platform"
+            f"Thank you,\nMedi Point"
         ),
     }

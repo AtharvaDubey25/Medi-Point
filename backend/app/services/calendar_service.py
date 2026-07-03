@@ -29,7 +29,7 @@ async def create_calendar_event(
 
         event = {
             "summary": f"Appointment with {appointment.patient.full_name if user_id == appointment.doctor_id else 'Dr. ' + appointment.doctor.full_name}",
-            "description": f"Healthcare Appointment\nStatus: {appointment.status}",
+            "description": f"Medi Point Appointment\nStatus: {appointment.status}",
             "start": {
                 "dateTime": start_dt,
                 "timeZone": settings.CALENDAR_TIMEZONE,

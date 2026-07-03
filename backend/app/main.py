@@ -50,7 +50,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Healthcare Appointment Platform",
+    title="Medi Point",
     version="1.0.0",
     lifespan=lifespan,
 )
@@ -72,4 +72,4 @@ app.include_router(admin.router)
 
 @app.get("/api/health")
 async def health_check():
-    return {"status": "ok", "service": "healthcare-appointment-platform"}
+    return {"status": "ok", "service": "medi-point"}

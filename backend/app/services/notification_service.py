@@ -30,7 +30,7 @@ async def notify_booking_confirmation(db: Prisma, appointment):
             f"Date: {date_str}\n"
             f"Time: {appointment.start_time} - {appointment.end_time}\n\n"
             f"Please check the portal for symptom details.\n\n"
-            f"Thank you,\nHealthcare Platform"
+            f"Thank you,\nMedi Point"
         ),
     }
 
@@ -74,7 +74,7 @@ async def notify_cancellation(db: Prisma, appointment, reason: str = None):
         f"Time: {appointment.start_time} - {appointment.end_time}"
         f"{reason_text}\n\n"
         f"Please book a new appointment at your convenience.\n\n"
-        f"Thank you,\nHealthcare Platform"
+        f"Thank you,\nMedi Point"
     )
 
     doctor_body = (
@@ -84,7 +84,7 @@ async def notify_cancellation(db: Prisma, appointment, reason: str = None):
         f"Date: {date_str}\n"
         f"Time: {appointment.start_time} - {appointment.end_time}"
         f"{reason_text}\n\n"
-        f"Thank you,\nHealthcare Platform"
+        f"Thank you,\nMedi Point"
     )
 
     await send_email(
@@ -110,7 +110,7 @@ async def notify_leave_cancellation(db: Prisma, appointment):
         f"on {date_str} at {appointment.start_time} has been cancelled "
         f"because the doctor is on leave.\n\n"
         f"We apologise for the inconvenience. Please book a new appointment.\n\n"
-        f"Thank you,\nHealthcare Platform"
+        f"Thank you,\nMedi Point"
     )
 
     await send_email(
@@ -134,7 +134,7 @@ async def send_medication_reminder(db: Prisma, medication, patient_email: str, p
         f"Dosage: {medication.dosage}\n"
         f"Frequency: {medication.frequency}\n\n"
         f"Please take your medication as prescribed.\n\n"
-        f"Thank you,\nHealthcare Platform"
+        f"Thank you,\nMedi Point"
     )
 
     await send_email(
@@ -155,7 +155,7 @@ async def send_appointment_reminder(db: Prisma, appointment):
         f"Date: {date_str}\n"
         f"Time: {appointment.start_time} - {appointment.end_time}\n\n"
         f"Please arrive on time.\n\n"
-        f"Thank you,\nHealthcare Platform"
+        f"Thank you,\nMedi Point"
     )
 
     doctor_body = (
@@ -164,7 +164,7 @@ async def send_appointment_reminder(db: Prisma, appointment):
         f"Patient: {appointment.patient.full_name}\n"
         f"Date: {date_str}\n"
         f"Time: {appointment.start_time} - {appointment.end_time}\n\n"
-        f"Thank you,\nHealthcare Platform"
+        f"Thank you,\nMedi Point"
     )
 
     await send_email(
