@@ -1,0 +1,48 @@
+<%- include('../layouts/header') %>
+<h2><%= doctor ? 'Edit Doctor' : 'Create Doctor' %></h2>
+<div class="card">
+  <% if (typeof error !== 'undefined' && error) { %>
+    <div class="alert alert-error"><%= error %></div>
+  <% } %>
+  <form method="POST" action="/admin/doctors/<%= doctor ? doctor.user_id + '/edit' : 'create' %>">
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" name="full_name" value="<%= doctor ? doctor.full_name : '' %>" required>
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" name="email" value="<%= doctor ? doctor.email : '' %>" <%= doctor ? 'readonly' : 'required' %>>
+    </div>
+    <% if (!doctor) { %>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" name="password" required>
+    </div>
+    <% } %>
+    <div class="form-group">
+      <label>Specialization</label>
+      <input type="text" name="specialization" value="<%= doctor ? doctor.specialization : '' %>" required>
+    </div>
+    <div class="form-group">
+      <label>Qualification</label>
+      <input type="text" name="qualification" value="<%= doctor ? doctor.qualification : '' %>">
+    </div>
+    <div class="form-group">
+      <label>Experience (years)</label>
+      <input type="number" name="experience_years" value="<%= doctor ? doctor.experience_years : '' %>">
+    </div>
+    <div class="form-group">
+      <label>Slot Duration (minutes)</label>
+      <input type="number" name="slot_duration_minutes" value="<%= doctor ? doctor.slot_duration_minutes : 30 %>">
+    </div>
+    <div class="form-group">
+      <label>Bio</label>
+      <textarea name="bio" rows="4"><%= doctor ? doctor.bio : '' %></textarea>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary"><%= doctor ? 'Update' : 'Create' %></button>
+      <a href="/admin/dashboard" class="btn">Cancel</a>
+    </div>
+  </form>
+</div>
+<%- include('../layouts/footer') %>

@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-py"
+  recursive_type_depth = 5
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                   Int       @id @default(autoincrement())
+  email                String    @unique
+  password_hash        String
+  full_name            String
+  phone                String?
+  role                 String    @default("PATIENT")
+  is_active            Boolean   @default(true)
+  google_calendar_token String?
+  created_at           DateTime  @default(now())
+  updated_at           DateTime  @updatedAt
+
+  doctor_profile       DoctorProfile?
+  patient_appointments  Appointment[] @relation("PatientAppointments")
+  doctor_appointments   Appointment[] @relation("DoctorAppointments")
+}
+
+model DoctorProfile {
+  id                    Int      @id @default(autoincrement())
+  user_id               Int      @unique
+  user                  User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  specialization        String
+  qualification         String?
+  experience_years      Int?
+  slot_duration_minutes Int      @default(30)
+  is_on_leave           Boolean  @default(false)
+  bio                   String?
+  created_at            DateTime @default(now())
+
+  availability          DoctorAvailability[]
+  leaves                DoctorLeave[]
+}
+
+model DoctorAvailability {
+  id          Int            @id @default(autoincrement())
+  doctor_id   Int
+  doctor      DoctorProfile  @relation(fields: [doctor_id], references: [id], onDelete: Cascade)
+  day_of_week Int            // 0=Mon, 6=Sun
+  start_time  String         // HH:MM format
+  end_time    String         // HH:MM format
+  is_available Boolean       @default(true)
+}
+
+model DoctorLeave {
+  id          Int           @id @default(autoincrement())
+  doctor_id   Int
+  doctor      DoctorProfile @relation(fields: [doctor_id], references: [id], onDelete: Cascade)
+  leave_date  DateTime      // Date only, but stored as DateTime for SQLite compat
+  reason      String?
+  created_at  DateTime      @default(now())
+}
+
+model Appointment {
+  id                      Int               @id @default(autoincrement())
+  patient_id              Int
+  doctor_id               Int
+  patient                 User              @relation("PatientAppointments", fields: [patient_id], references: [id])
+  doctor                  User              @relation("DoctorAppointments", fields: [doctor_id], references: [id])
+  appointment_date        DateTime          // Date only
+  start_time              String            // HH:MM format
+  end_time                String            // HH:MM format
+  status                  String @default("SCHEDULED")
+  google_calendar_event_id String?
+  doctor_calendar_event_id String?
+  cancellation_reason     String?
+  created_at              DateTime          @default(now())
+  updated_at              DateTime          @updatedAt
+
+  symptom_form            SymptomForm?
+  medications             Medication[]
+}
+
+model SymptomForm {
+  id                   Int         @id @default(autoincrement())
+  appointment_id       Int         @unique
+  appointment          Appointment @relation(fields: [appointment_id], references: [id], onDelete: Cascade)
+  symptoms_text        String
+  pre_visit_summary    String?
+  post_visit_notes     String?
+  post_visit_prescription String?
+  post_visit_summary   String?
+  created_at           DateTime    @default(now())
+  updated_at           DateTime    @updatedAt
+}
+
+model Medication {
+  id              Int         @id @default(autoincrement())
+  appointment_id  Int
+  appointment     Appointment @relation(fields: [appointment_id], references: [id], onDelete: Cascade)
+  medication_name String
+  dosage          String
+  frequency       String      // e.g., "1x daily", "2x daily", "every 8 hours"
+  duration_days   Int?
+  start_date      DateTime?   // Date only
+  last_reminded_at DateTime?
+  notes           String?
+  created_at      DateTime    @default(now())
+}

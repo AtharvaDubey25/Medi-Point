@@ -1,0 +1,40 @@
+<%- include('../layouts/header') %>
+<h2>Post-Visit Summary</h2>
+<div class="card">
+  <% if (data && data.summary) { %>
+    <div class="summary-section">
+      <h3>Diagnosis</h3>
+      <p><%= data.summary.diagnosis_explanation %></p>
+    </div>
+    <div class="summary-section">
+      <h3>Treatment Plan</h3>
+      <p><%= data.summary.treatment_plan %></p>
+    </div>
+    <div class="summary-section">
+      <h3>Medication Instructions</h3>
+      <p><%= data.summary.medication_instructions %></p>
+    </div>
+    <div class="summary-section">
+      <h3>Follow-Up Advice</h3>
+      <p><%= data.summary.follow_up_advice %></p>
+    </div>
+    <div class="summary-section">
+      <h3>When to Seek Help</h3>
+      <p><%= data.summary.when_to_seek_help %></p>
+    </div>
+    <% if (data.prescription) { %>
+      <div class="summary-section">
+        <h3>Prescription</h3>
+        <pre><%= data.prescription %></pre>
+      </div>
+    <% } %>
+  <% } else { %>
+    <p>No summary available yet.</p>
+  <% } %>
+  <% if (user && user.role === 'DOCTOR') { %>
+    <a href="/doctor/dashboard" class="btn btn-primary">Back to Dashboard</a>
+  <% } else { %>
+    <a href="/patient/dashboard" class="btn btn-primary">Back to Dashboard</a>
+  <% } %>
+</div>
+<%- include('../layouts/footer') %>

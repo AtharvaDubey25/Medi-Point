@@ -1,0 +1,54 @@
+<%- include('../layouts/header') %>
+<h2>Patient Dashboard</h2>
+<div class="dashboard-grid">
+  <div class="card">
+    <h3>Quick Actions</h3>
+    <a href="/patient/doctors" class="btn btn-primary">Book New Appointment</a>
+  </div>
+
+  <div class="card">
+    <h3>My Appointments</h3>
+    <% if (appointments && appointments.length > 0) { %>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Doctor</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% appointments.forEach(function(apt) { %>
+              <tr>
+                <td>Dr. <%= apt.doctor_name %></td>
+                <td><%= apt.appointment_date %></td>
+                <td><%= apt.start_time %> - <%= apt.end_time %></td>
+                <td><span class="badge badge-<%= apt.status.toLowerCase() %>"><%= apt.status %></span></td>
+                <td class="actions">
+                  <% if (apt.status === 'SCHEDULED' || apt.status === 'RESCHEDULED') { %>
+                    <% if (!apt.has_symptom_form) { %>
+                      <a href="/patient/appointments/<%= apt.id %>/symptoms" class="btn btn-sm">Submit Symptoms</a>
+                    <% } %>
+                    <a href="/patient/appointments/<%= apt.id %>/reschedule/slots" class="btn btn-sm">Reschedule</a>
+                    <form method="POST" action="/patient/appointments/<%= apt.id %>/cancel" style="display:inline">
+                      <button type="submit" class="btn btn-sm btn-danger">Cancel</button>
+                    </form>
+                  <% } %>
+                  <% if (apt.has_post_visit_summary) { %>
+                    <a href="/patient/appointments/<%= apt.id %>/summary" class="btn btn-sm">View Summary</a>
+                  <% } %>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    <% } else { %>
+      <p>No appointments found. <a href="/patient/doctors">Book one now</a>.</p>
+    <% } %>
+  </div>
+</div>
+<%- include('../layouts/footer') %>

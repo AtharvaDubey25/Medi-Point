@@ -1,0 +1,29 @@
+<%- include('../layouts/header') %>
+<h2>Find a Doctor</h2>
+<div class="search-bar">
+  <form method="GET" action="/patient/doctors">
+    <input type="text" name="specialization" placeholder="Search by specialization..." value="<%= specialization %>">
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+</div>
+
+<div class="doctor-grid">
+  <% if (doctors && doctors.length > 0) { %>
+    <% doctors.forEach(function(doc) { %>
+      <div class="card doctor-card">
+        <h3>Dr. <%= doc.full_name %></h3>
+        <p class="specialization"><%= doc.specialization %></p>
+        <% if (doc.experience_years != null) { %>
+          <p><%= doc.experience_years %> years experience</p>
+        <% } %>
+        <% if (doc.bio) { %>
+          <p class="bio"><%= doc.bio.substring(0, 100) %></p>
+        <% } %>
+        <a href="/patient/doctors/<%= doc.user_id %>/slots" class="btn btn-primary">Book Appointment</a>
+      </div>
+    <% }); %>
+  <% } else { %>
+    <p>No doctors found.</p>
+  <% } %>
+</div>
+<%- include('../layouts/footer') %>

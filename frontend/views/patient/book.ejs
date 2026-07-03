@@ -1,0 +1,25 @@
+<%- include('../layouts/header') %>
+<h2>Book Appointment</h2>
+<div class="card">
+  <h3>Dr. <%= doctor.full_name %></h3>
+  <p><strong>Date:</strong> <%= date %> | <strong>Time:</strong> <%= time %></p>
+
+  <% if (typeof error !== 'undefined' && error) { %>
+    <div class="alert alert-error"><%= error %></div>
+  <% } %>
+
+  <form method="POST" action="/patient/book">
+    <input type="hidden" name="doctor_id" value="<%= doctor.user_id %>">
+    <input type="hidden" name="appointment_date" value="<%= date %>">
+    <input type="hidden" name="start_time" value="<%= time %>">
+
+    <div class="form-group">
+      <label>Describe your symptoms</label>
+      <textarea name="symptoms" rows="5" required placeholder="Please describe your symptoms in detail..."></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Confirm Booking</button>
+    <a href="/patient/doctors/<%= doctor.user_id %>/slots?date=<%= date %>" class="btn">Back</a>
+  </form>
+</div>
+<%- include('../layouts/footer') %>

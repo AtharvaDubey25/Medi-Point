@@ -1,0 +1,48 @@
+<%- include('../layouts/header') %>
+<h2>Post-Visit Notes</h2>
+<div class="card">
+  <% if (typeof error !== 'undefined' && error) { %>
+    <div class="alert alert-error"><%= error %></div>
+  <% } %>
+  <form method="POST" action="/doctor/appointments/<%= appointmentId %>/post-visit">
+    <div class="form-group">
+      <label>Clinical Notes</label>
+      <textarea name="notes" rows="8" required placeholder="Describe diagnosis, observations, and treatment plan..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Prescription</label>
+      <textarea name="prescription" rows="4" placeholder="Enter prescription details..."></textarea>
+    </div>
+
+    <h4>Medications</h4>
+    <div id="medications">
+      <div class="med-row">
+        <input type="text" name="med_name" placeholder="Medication name">
+        <input type="text" name="med_dosage" placeholder="Dosage">
+        <input type="text" name="med_frequency" placeholder="Frequency (e.g. 1x daily)">
+        <input type="number" name="med_duration" placeholder="Duration (days)">
+      </div>
+    </div>
+    <button type="button" class="btn btn-sm" onclick="addMedRow()">+ Add Medication</button>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <a href="/doctor/dashboard" class="btn">Cancel</a>
+    </div>
+  </form>
+</div>
+
+<script>
+function addMedRow() {
+  const div = document.createElement('div');
+  div.className = 'med-row';
+  div.innerHTML = `
+    <input type="text" name="med_name" placeholder="Medication name">
+    <input type="text" name="med_dosage" placeholder="Dosage">
+    <input type="text" name="med_frequency" placeholder="Frequency">
+    <input type="number" name="med_duration" placeholder="Duration (days)">
+  `;
+  document.getElementById('medications').appendChild(div);
+}
+</script>
+<%- include('../layouts/footer') %>

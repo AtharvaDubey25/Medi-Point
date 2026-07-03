@@ -1,0 +1,22 @@
+<%- include('../layouts/header') %>
+<h2>Appointment Details</h2>
+<div class="card">
+  <p><strong>Patient:</strong> <%= appointment.patient_name %></p>
+  <p><strong>Date:</strong> <%= appointment.appointment_date %></p>
+  <p><strong>Time:</strong> <%= appointment.start_time %> - <%= appointment.end_time %></p>
+  <p><strong>Status:</strong> <span class="badge badge-<%= appointment.status.toLowerCase() %>"><%= appointment.status %></span></p>
+
+  <div class="actions">
+    <% if (appointment.has_pre_visit_summary) { %>
+      <a href="/doctor/appointments/<%= appointment.id %>/pre-visit" class="btn btn-primary">View AI Symptom Summary</a>
+    <% } %>
+    <% if (appointment.has_post_visit_summary) { %>
+      <a href="/doctor/appointments/<%= appointment.id %>/summary" class="btn btn-primary">View Post-Visit Summary</a>
+    <% } %>
+    <% if (appointment.status === 'SCHEDULED' || appointment.status === 'RESCHEDULED') { %>
+      <a href="/doctor/appointments/<%= appointment.id %>/post-visit" class="btn btn-primary">Submit Post-Visit Notes</a>
+    <% } %>
+    <a href="/doctor/dashboard" class="btn">Back</a>
+  </div>
+</div>
+<%- include('../layouts/footer') %>

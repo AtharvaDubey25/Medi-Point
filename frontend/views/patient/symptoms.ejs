@@ -1,0 +1,16 @@
+<%- include('../layouts/header') %>
+<h2>Submit Symptoms</h2>
+<div class="card">
+  <% if (typeof error !== 'undefined' && error) { %>
+    <div class="alert alert-error"><%= error %></div>
+  <% } %>
+  <form method="POST" action="/patient/appointments/<%= appointmentId %>/symptoms">
+    <div class="form-group">
+      <label>Describe your symptoms in detail</label>
+      <textarea name="symptoms" rows="8" required placeholder="Please describe when symptoms started, severity, any triggers, etc."></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a href="/patient/dashboard" class="btn">Cancel</a>
+  </form>
+</div>
+<%- include('../layouts/footer') %>

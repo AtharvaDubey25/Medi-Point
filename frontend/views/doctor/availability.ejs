@@ -1,0 +1,88 @@
+<%- include('../layouts/header') %>
+<h2>Manage Schedule</h2>
+<% if (typeof error !== 'undefined' && error) { %>
+  <div class="alert alert-error"><%= error %></div>
+<% } %>
+
+<div class="dashboard-grid">
+  <div class="card">
+    <h3>Add Working Hours</h3>
+    <form method="POST" action="/doctor/availability">
+      <div class="form-group">
+        <label>Day of Week</label>
+        <select name="day_of_week" required>
+          <option value="0">Monday</option>
+          <option value="1">Tuesday</option>
+          <option value="2">Wednesday</option>
+          <option value="3">Thursday</option>
+          <option value="4">Friday</option>
+          <option value="5">Saturday</option>
+          <option value="6">Sunday</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Start Time</label>
+        <input type="time" name="start_time" required>
+      </div>
+      <div class="form-group">
+        <label>End Time</label>
+        <input type="time" name="end_time" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h3>Mark Leave</h3>
+    <form method="POST" action="/doctor/leave">
+      <div class="form-group">
+        <label>Leave Date</label>
+        <input type="date" name="leave_date" required>
+      </div>
+      <div class="form-group">
+        <label>Reason</label>
+        <input type="text" name="reason" placeholder="Optional reason">
+      </div>
+      <button type="submit" class="btn btn-warning">Mark Leave</button>
+    </form>
+  </div>
+</div>
+
+<% if (doctor && doctor.availability && doctor.availability.length > 0) { %>
+  <div class="card">
+    <h3>Current Availability</h3>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Start</th>
+            <th>End</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% var days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']; %>
+          <% doctor.availability.forEach(function(a) { %>
+            <tr>
+              <td><%= days[a.day_of_week] %></td>
+              <td><%= a.start_time %></td>
+              <td><%= a.end_time %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% } %>
+
+<% if (doctor && doctor.leaves && doctor.leaves.length > 0) { %>
+  <div class="card">
+    <h3>Leave Days</h3>
+    <ul>
+      <% doctor.leaves.forEach(function(l) { %>
+        <li><%= l.leave_date %> <% if (l.reason) { %>- <%= l.reason %><% } %></li>
+      <% }); %>
+    </ul>
+  </div>
+<% } %>
+<%- include('../layouts/footer') %>

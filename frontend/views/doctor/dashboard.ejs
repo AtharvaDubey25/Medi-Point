@@ -1,0 +1,52 @@
+<%- include('../layouts/header') %>
+<h2>Doctor Dashboard</h2>
+<div class="dashboard-grid">
+  <div class="card">
+    <h3>Quick Actions</h3>
+    <a href="/doctor/availability" class="btn btn-primary">Manage Schedule</a>
+  </div>
+
+  <div class="card">
+    <h3>My Appointments</h3>
+    <% if (appointments && appointments.length > 0) { %>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% appointments.forEach(function(apt) { %>
+              <tr>
+                <td><%= apt.patient_name %></td>
+                <td><%= apt.appointment_date %></td>
+                <td><%= apt.start_time %> - <%= apt.end_time %></td>
+                <td><span class="badge badge-<%= apt.status.toLowerCase() %>"><%= apt.status %></span></td>
+                <td class="actions">
+                  <a href="/doctor/appointments/<%= apt.id %>" class="btn btn-sm">View</a>
+                  <% if ((apt.status === 'SCHEDULED' || apt.status === 'RESCHEDULED') && apt.has_pre_visit_summary) { %>
+                    <a href="/doctor/appointments/<%= apt.id %>/pre-visit" class="btn btn-sm">AI Summary</a>
+                  <% } %>
+                  <% if (apt.status === 'SCHEDULED' || apt.status === 'RESCHEDULED') { %>
+                    <a href="/doctor/appointments/<%= apt.id %>/post-visit" class="btn btn-sm btn-primary">Post-Visit</a>
+                  <% } %>
+                  <% if (apt.has_post_visit_summary) { %>
+                    <a href="/doctor/appointments/<%= apt.id %>/summary" class="btn btn-sm">Summary</a>
+                  <% } %>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    <% } else { %>
+      <p>No appointments yet.</p>
+    <% } %>
+  </div>
+</div>
+<%- include('../layouts/footer') %>

@@ -1,0 +1,22 @@
+<%- include('../layouts/header') %>
+<h2>Confirm Reschedule</h2>
+<div class="card">
+  <h3>Dr. <%= doctor.full_name %></h3>
+  <p>Rescheduling from: <strong><%= appointment.appointment_date %> at <%= appointment.start_time %></strong></p>
+  <p>New Date & Time: <strong><%= date %> at <%= time %></strong></p>
+
+  <% if (typeof error !== 'undefined' && error) { %>
+    <div class="alert alert-error"><%= error %></div>
+  <% } %>
+
+  <form method="POST" action="/patient/appointments/<%= appointment.id %>/reschedule/confirm">
+    <input type="hidden" name="date" value="<%= date %>">
+    <input type="hidden" name="time" value="<%= time %>">
+
+    <p class="warning-text">Are you sure you want to reschedule this appointment?</p>
+
+    <button type="submit" class="btn btn-primary">Confirm Reschedule</button>
+    <a href="/patient/appointments/<%= appointment.id %>/reschedule/slots?date=<%= date %>" class="btn">Back</a>
+  </form>
+</div>
+<%- include('../layouts/footer') %>

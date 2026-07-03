@@ -1,0 +1,74 @@
+<%- include('../layouts/header') %>
+<h2>Admin Dashboard</h2>
+<div class="dashboard-grid">
+  <div class="card">
+    <h3>Quick Actions</h3>
+    <a href="/admin/doctors/create" class="btn btn-primary">Create Doctor</a>
+  </div>
+
+  <div class="card">
+    <h3>Doctors</h3>
+    <% if (doctors && doctors.length > 0) { %>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Specialization</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% doctors.forEach(function(doc) { %>
+              <tr>
+                <td>Dr. <%= doc.full_name %></td>
+                <td><%= doc.specialization %></td>
+                <td><%= doc.is_on_leave ? 'On Leave' : 'Active' %></td>
+                <td class="actions">
+                  <a href="/admin/doctors/<%= doc.user_id %>/edit" class="btn btn-sm">Edit</a>
+                  <form method="POST" action="/admin/doctors/<%= doc.user_id %>/delete" style="display:inline" onsubmit="return confirm('Delete this doctor?')">
+                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                  </form>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    <% } else { %>
+      <p>No doctors yet. <a href="/admin/doctors/create">Create one</a>.</p>
+    <% } %>
+  </div>
+
+  <div class="card">
+    <h3>All Appointments</h3>
+    <% if (appointments && appointments.length > 0) { %>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Doctor</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% appointments.forEach(function(apt) { %>
+              <tr>
+                <td><%= apt.patient_name %></td>
+                <td>Dr. <%= apt.doctor_name %></td>
+                <td><%= apt.appointment_date %></td>
+                <td><span class="badge badge-<%= apt.status.toLowerCase() %>"><%= apt.status %></span></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    <% } else { %>
+      <p>No appointments yet.</p>
+    <% } %>
+  </div>
+</div>
+<%- include('../layouts/footer') %>

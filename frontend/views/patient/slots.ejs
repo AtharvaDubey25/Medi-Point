@@ -1,0 +1,29 @@
+<%- include('../layouts/header') %>
+<h2>Available Slots - Dr. <%= doctor.full_name %></h2>
+<p><%= doctor.specialization %></p>
+
+<div class="date-picker">
+  <form method="GET" action="/patient/doctors/<%= doctor.user_id %>/slots">
+    <label>Select Date:</label>
+    <input type="date" name="date" value="<%= date %>" required>
+    <button type="submit" class="btn btn-primary">Check Slots</button>
+  </form>
+</div>
+
+<% if (slots && slots.length > 0) { %>
+  <div class="slots-grid">
+    <% slots.forEach(function(slot) { %>
+      <div class="slot-card <%= slot.available ? 'available' : 'booked' %>">
+        <span><%= slot.start_time %> - <%= slot.end_time %></span>
+        <% if (slot.available) { %>
+          <a href="/patient/book/<%= doctor.user_id %>?date=<%= date %>&time=<%= slot.start_time %>" class="btn btn-sm btn-primary">Book</a>
+        <% } else { %>
+          <span class="booked-label">Booked</span>
+        <% } %>
+      </div>
+    <% }); %>
+  </div>
+<% } else if (date) { %>
+  <p>No available slots for this date.</p>
+<% } %>
+<%- include('../layouts/footer') %>
