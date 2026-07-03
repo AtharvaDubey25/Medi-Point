@@ -60,6 +60,11 @@ app.get('/logout', (req, res) => {
   res.redirect('/login');
 });
 
+app.get('/privacy', (req, res) => {
+  res.render('privacy');
+});
+
 app.listen(PORT, () => {
   console.log(`Frontend server running on http://localhost:${PORT}`);
 });
+
