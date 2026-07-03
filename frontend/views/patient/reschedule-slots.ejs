@@ -1,6 +1,32 @@
 <%- include('../layouts/header') %>
 <h2>Reschedule Appointment - Dr. <%= doctor.full_name %></h2>
-<p><%= doctor.specialization %></p>
+<p class="specialization"><%= doctor.specialization %></p>
+<div class="availability-info" style="margin-bottom: 20px; font-size: 0.95rem; color: #555;">
+  <span style="font-weight: 600; color: #333;">Weekly Availability:</span>
+  <% 
+    var weekdayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    var activeDays = [];
+    if (doctor.availability && doctor.availability.length > 0) {
+      var daySet = new Set();
+      doctor.availability.forEach(function(a) {
+        if (a.is_available) {
+          daySet.add(a.day_of_week);
+        }
+      });
+      var sortedDays = Array.from(daySet).sort(function(a, b) { return a - b; });
+      activeDays = sortedDays.map(function(d) { return weekdayNames[d]; });
+    }
+  %>
+  <% if (activeDays.length > 0) { %>
+    <span class="available-badge" style="background: #e6f4ea; color: #137333; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; font-weight: 500; margin-left: 8px;">
+      <%= activeDays.join(', ') %>
+    </span>
+  <% } else { %>
+    <span class="available-badge" style="background: #fce8e6; color: #c5221f; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; font-weight: 500; margin-left: 8px;">
+      No weekly availability set
+    </span>
+  <% } %>
+</div>
 <p>Current appointment: <strong><%= appointment.appointment_date %> at <%= appointment.start_time %> - <%= appointment.end_time %></strong></p>
 
 <div class="date-picker">
