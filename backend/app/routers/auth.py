@@ -1,6 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import RedirectResponse
 from prisma import Prisma
+import httpx
+from jose import jwt
 
+from app.config import settings
 from app.prisma_client import get_db
 from app.schemas.user import UserRegister, UserLogin, UserResponse, TokenResponse
 from app.services.auth_service import hash_password, verify_password, create_access_token, validate_password_strength
@@ -63,3 +67,44 @@ async def login(data: UserLogin, db: Prisma = Depends(get_db), _=Depends(login_l
             created_at=user.created_at,
         ),
     )
+
+
+@router.get("/google/callback")
+async def google_callback(code: str, state: str, db: Prisma = Depends(get_db)):
+    try:
+        payload = jwt.decode(state, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        subject = payload.get("sub")
+        if subject is None:
+            raise HTTPException(status_code=401, detail="Invalid token in state")
+        user_id = int(subject)
+    except Exception:
+        raise HTTPException(status_code=401, detail="Invalid token in state")
+
+    user = await db.user.find_first(where={"id": user_id})
+    if not user or not user.is_active:
+        raise HTTPException(status_code=401, detail="User not found or inactive")
+
+    async with httpx.AsyncClient() as client:
+        res = await client.post(
+            "https://oauth2.googleapis.com/token",
+            data={
+                "code": code,
+                "client_id": settings.GOOGLE_CLIENT_ID,
+                "client_secret": settings.GOOGLE_CLIENT_SECRET,
+                "redirect_uri": settings.GOOGLE_REDIRECT_URI,
+                "grant_type": "authorization_code",
+            }
+        )
+        if res.status_code != 200:
+            raise HTTPException(status_code=400, detail=f"Failed to retrieve Google token: {res.text}")
+        
+        token_data = res.json()
+        access_token = token_data.get("access_token")
+        
+        await db.user.update(
+            where={"id": user.id},
+            data={"google_calendar_token": access_token}
+        )
+
+    redirect_path = "/patient/dashboard" if user.role == "PATIENT" else "/doctor/dashboard"
+    return RedirectResponse(url=f"http://localhost:3000{redirect_path}?calendar=linked")

@@ -223,4 +223,9 @@ router.post('/appointments/:appointmentId/reschedule/confirm', async (req, res) 
   }
 });
 
+router.get('/google/link', (req, res) => {
+  const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(process.env.GOOGLE_REDIRECT_URI)}&response_type=code&scope=https://www.googleapis.com/auth/calendar.events&access_type=offline&prompt=consent&state=${req.cookies.token}`;
+  res.redirect(authUrl);
+});
+
 module.exports = router;
