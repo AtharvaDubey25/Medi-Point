@@ -10,7 +10,10 @@
 <body>
   <nav class="navbar">
     <div class="container">
-      <a href="/" class="navbar-brand">Medi Point</a>
+      <a href="/" class="navbar-brand">
+        <img src="/favicon.png" alt="Medi Point Logo" class="navbar-logo">
+        Medi Point
+      </a>
       <div class="navbar-nav">
         <% if (user) { %>
           <% if (user.role === 'PATIENT') { %>
