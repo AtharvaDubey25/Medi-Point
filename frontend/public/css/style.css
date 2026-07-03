@@ -135,6 +135,70 @@ pre { background: #f5f5f5; padding: 12px; border-radius: 6px; white-space: pre-w
     display: block;
     color: rgba(255, 255, 255, 0.9);
   }
+
+  /* Responsive Table Cards */
+  .table-responsive {
+    overflow-x: visible;
+  }
+  .table, .table thead, .table tbody, .table th, .table td, .table tr {
+    display: block;
+  }
+  .table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  .table tr {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  }
+  .table td {
+    border: none;
+    border-bottom: 1px solid #f3f4f6;
+    position: relative;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: right;
+  }
+  .table td:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-top: 10px;
+  }
+  .table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #4b5563;
+    text-align: left;
+    margin-right: 15px;
+  }
+  .table td.actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding-top: 12px;
+  }
+  .table td.actions::before {
+    content: attr(data-label);
+    margin-bottom: 6px;
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+  .table td.actions .btn, 
+  .table td.actions form,
+  .table td.actions form button {
+    width: 100%;
+    text-align: center;
+    margin: 0;
+  }
 }
 
 @media (max-width: 600px) {

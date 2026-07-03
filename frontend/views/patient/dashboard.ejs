@@ -23,11 +23,11 @@
           <tbody>
             <% appointments.forEach(function(apt) { %>
               <tr>
-                <td>Dr. <%= apt.doctor_name %></td>
-                <td><%= apt.appointment_date %></td>
-                <td><%= apt.start_time %> - <%= apt.end_time %></td>
-                <td><span class="badge badge-<%= apt.status.toLowerCase() %>"><%= apt.status %></span></td>
-                <td class="actions">
+                <td data-label="Doctor">Dr. <%= apt.doctor_name %></td>
+                <td data-label="Date"><%= apt.appointment_date %></td>
+                <td data-label="Time"><%= apt.start_time %> - <%= apt.end_time %></td>
+                <td data-label="Status"><span class="badge badge-<%= apt.status.toLowerCase() %>"><%= apt.status %></span></td>
+                <td data-label="Actions" class="actions">
                   <% if (apt.status === 'SCHEDULED' || apt.status === 'RESCHEDULED') { %>
                     <% if (!apt.has_symptom_form) { %>
                       <a href="/patient/appointments/<%= apt.id %>/symptoms" class="btn btn-sm">Submit Symptoms</a>

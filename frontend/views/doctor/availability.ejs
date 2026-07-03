@@ -64,9 +64,9 @@
           <% var days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']; %>
           <% doctor.availability.forEach(function(a) { %>
             <tr>
-              <td><%= days[a.day_of_week] %></td>
-              <td><%= a.start_time %></td>
-              <td><%= a.end_time %></td>
+              <td data-label="Day"><%= days[a.day_of_week] %></td>
+              <td data-label="Start"><%= a.start_time %></td>
+              <td data-label="End"><%= a.end_time %></td>
             </tr>
           <% }); %>
         </tbody>
