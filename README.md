@@ -10,7 +10,11 @@ Medi Point is a modern, responsive, and secure healthcare appointment scheduling
 * **Backend API (FastAPI)**: [https://medi-point.onrender.com](https://medi-point.onrender.com)
 * **Database**: Hosted on **Supabase PostgreSQL**
 
+> [!IMPORTANT]
+> **Render Free Tier Wake-Up Note**: Since this application is hosted on Render's free tier, the backend API server goes to sleep (spins down) after 15 minutes of inactivity. If the login or registration hangs or fails on your first attempt, please visit the Backend Docs URL at [https://medi-point.onrender.com/docs](https://medi-point.onrender.com/docs) to wake up the server (this can take up to 50 seconds), then refresh the portal and try again.
+
 ---
+
 
 ## 🛠️ Local Setup Guide
 
