@@ -6,6 +6,8 @@ const getApiBase = (req) => req.app.locals.apiBase;
 
 router.get('/login', (req, res) => {
   if (req.cookies.token) return res.redirect('/');
+  // Fire-and-forget ping to wake up the backend server on Render
+  axios.get(`${getApiBase(req)}/doctors/search`, { params: { limit: 1 } }).catch(() => {});
   res.render('auth/login', { error: null });
 });
 
@@ -24,8 +26,11 @@ router.post('/login', async (req, res) => {
 
 router.get('/register', (req, res) => {
   if (req.cookies.token) return res.redirect('/');
+  // Fire-and-forget ping to wake up the backend server on Render
+  axios.get(`${getApiBase(req)}/doctors/search`, { params: { limit: 1 } }).catch(() => {});
   res.render('auth/register', { error: null });
 });
+
 
 router.post('/register', async (req, res) => {
   try {
